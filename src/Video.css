@@ -1,0 +1,18 @@
+.Video {
+    position: relative;
+    background-color: rgb(146, 231, 213);
+    scroll-snap-align: start;
+    height: auto;
+    width: auto;
+}
+.Video_player{
+    object-fit: fill;
+    height: 100%;
+    width: 100%;
+}
+@media {
+    style {
+        width: auto;
+        height: auto;
+    }
+}
