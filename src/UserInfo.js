@@ -25,8 +25,8 @@ export default function UserInfo() {
                     <Avatar sx={{ width: 80, height: 80, m: 3, marginTop: 4 }} src={params.get('image')}/>
                     <Typography component="h1" variant="h4">{params.get('name')}</Typography>
                     <Grid sx={{ flexGrow: 1, margin:3}} container justifyContent="center" direction="row" alignItems="center">
-                        <Grid item><Fab variant="extended" color="primary" aria-label="add"><Notifications />Notifications</Fab></Grid>
-                        <Grid item><Fab variant="extended" color="primary" aria-label="add"><Forum />Messenger</Fab></Grid>
+                        <Grid item><Fab variant="extended" color="primary" aria-label="add"><Notifications /></Fab></Grid>
+                        <Grid item><Fab variant="extended" color="primary" aria-label="add"><Forum /></Fab></Grid>
                         <Grid item><Fab variant="extended" color="primary" aria-label="add"></Fab></Grid>
                     </Grid>
                 </div>
