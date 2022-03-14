@@ -58,6 +58,7 @@ export default function Login() {
                             {params.get('email')!=null ? <MenuItem ><Link to={'/userInfo?email=' + params.get('email') + '&image=' + params.get('image') + '&name=' + nameUser + '&rft=' + rft}>My Info</Link></MenuItem> : <MenuItem href={'https://anime-douyin.herokuapp.com/redirect'}>My Info</MenuItem>}
                             <MenuItem href="https://anime-douyin.vercel.app/">Log Out</MenuItem>
                         </Menu>
+
                     </div> : <IconButton
                         size="large"
                         aria-label="account of current user"
