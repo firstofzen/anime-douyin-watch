@@ -143,7 +143,7 @@ export default function UserInfo() {
                                     {
                                         resltSearchFr.map(({image, name, email}) =>
                                             <ListItem>
-                                                <ListItemAvatar src={image}/>
+                                                <ListItemAvatar><Avatar src={image}/></ListItemAvatar>
                                                 <ListItemText primary={name}/>
                                             </ListItem>
                                         )
