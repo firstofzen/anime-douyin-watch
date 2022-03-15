@@ -10,7 +10,18 @@ import {
     Button,
     Fab,
     Chip,
-    Slide, Dialog, AppBar, Toolbar, DialogContent, List, ListItem, ListItemAvatar, ListItemText, DialogTitle
+    Slide,
+    Dialog,
+    AppBar,
+    Toolbar,
+    DialogContent,
+    List,
+    ListItem,
+    ListItemAvatar,
+    ListItemText,
+    DialogTitle,
+    TextField,
+    DialogActions
 } from '@mui/material';
 import axios from "axios";
 import './UserInfo.css';
@@ -52,12 +63,6 @@ export default function UserInfo() {
         }).catch(er => console.log(er)).finally(() => setOpenDialogQueueFr(true))
     }
 
-    const handleOpenDialogSearchFr = () => {
-        axios.get("https://anime-douyin.herokuapp.com/searchUsrByPrefixName", {params:{prefixNameFr:textSearchFr}})
-            .then(resp => setResltSearchFr(resp.data))
-            .catch(er => console.log(er))
-            .finally(() => setOpenDialogSearchFr(true));
-    }
 
     return (
         <Container maxWidth="lg">
@@ -121,11 +126,22 @@ export default function UserInfo() {
                             </Dialog>
                         </Grid>
                         <Grid>
-                            <IconButton onClick={handleOpenDialogSearchFr}>
+                            <IconButton onClick={() => setOpenDialogSearchFr(true)}>
                                 <PersonAdd />
                             </IconButton>
                             <Dialog open={openDialogSearchFr} onClose={() => setOpenDialogSearchFr(false)}>
                                 <DialogTitle>Search User</DialogTitle>
+                                <TextField  hiddenLabel
+                                            id="filled-hidden-label-normal"
+                                            variant="filled"
+                                            size={'medium'}
+                                            onChange={ev => setTextSearchFr(ev.target.value)}
+                                />
+                                <DialogActions><Button onClick={() => {
+                                    axios.get("https://anime-douyin.herokuapp.com/searchUsrByPrefixName", {params:{prefixNameFr:textSearchFr}})
+                                        .then(resp => setResltSearchFr(resp.data))
+                                        .catch(er => console.log(er));
+                                }}>Search</Button></DialogActions>
                             </Dialog>
                         </Grid>
                     </Grid>
