@@ -142,6 +142,18 @@ export default function UserInfo() {
                                         .then(resp => setResltSearchFr(resp.data))
                                         .catch(er => console.log(er));
                                 }}>Search</Button></DialogActions>
+                                <DialogContext>
+                                    <List>
+                                        {
+                                            resltSearchFr.map(({image, name, email}) =>
+                                                <ListItem>
+                                                    <ListItemAvatar src={image} />
+                                                    <ListItemText primary={name}/>
+                                                </ListItem>
+                                            )
+                                        }
+                                    </List>
+                                </DialogContext>
                             </Dialog>
                         </Grid>
                     </Grid>
