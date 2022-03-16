@@ -187,7 +187,7 @@ export default function UserInfo() {
                                                         <Grid container direction="row" justifyContent="center"
                                                               alignItems="center">
                                                             <Grid item>
-                                                                {listFrOfFr.include(params.get('email')) ?
+                                                                {listFrOfFr.includes(params.get('email')) ?
                                                                     <Fab>
                                                                         <IconButton onClick={() => {
                                                                             axios.delete("https://anime-douyin.herokuapp.com/unFriend", {
