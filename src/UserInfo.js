@@ -20,13 +20,24 @@ import {
     ListItemText,
     DialogTitle,
     TextField,
-    DialogActions
+    DialogActions, Card, ListItemButton
 } from '@mui/material';
 import axios from "axios";
 import './UserInfo.css';
 import React, {useState} from "react";
 import Video from "./Video";
-import {Forum, Notifications, SupervisorAccount, CancelPresentation, GroupAdd, PersonAdd} from '@material-ui/icons';
+import {
+    Forum,
+    Notifications,
+    SupervisorAccount,
+    CancelPresentation,
+    GroupAdd,
+    PersonAdd,
+    Details,
+    Sms,
+    PersonAddDisabled,
+    PeopleOutline
+} from '@material-ui/icons';
 import DialogContext from "@mui/material/Dialog/DialogContext";
 
 const Transition = React.forwardRef(function Transition(props, ref) {
@@ -42,6 +53,10 @@ export default function UserInfo() {
     const [openDialogSearchFr, setOpenDialogSearchFr] = useState(false);
     const [textSearchFr, setTextSearchFr] = useState("");
     const [resltSearchFr, setResltSearchFr] = useState([]);
+    const [infoFr, setInfoFr] = useState({});
+    const [openDialogDetailFr, setOpenDialogDetailFr] = useState(false);
+    const [listFrOfFr, setListFrOfFr] = useState(infoFr.listFriend);
+    const [queueFrOfFr, setQueueFrofFr] = useState(infoFr.queueAddFr);
     React.useEffect(() => {
         axios.get("https://anime-douyin.herokuapp.com/getAllVideoLiked", {params: {email: params.get('email')}}).then(resp => {
             console.log(resp.data)
@@ -50,7 +65,7 @@ export default function UserInfo() {
     }, []);
 
     const handleOpenDialogFr = () => {
-        axios.get("https://anime-douyin.herokuapp.com/getListFr", {params: {email: params.get('email')}})
+        axios.get("https://anime-douyin.herokuapp.com/getAllFriend", {params: {email: params.get('email')}})
             .then(resp => setListFr(resp.data))
             .catch(er => console.log(er))
             .finally(() => setOpenDialogFr(true));
@@ -61,7 +76,6 @@ export default function UserInfo() {
             setListQueueFr(resp.data);
         }).catch(er => console.log(er)).finally(() => setOpenDialogQueueFr(true))
     }
-
 
     return (
         <Container maxWidth="lg">
@@ -84,7 +98,7 @@ export default function UserInfo() {
                                     open={openDialogFr}>
                                 <AppBar sx={{position: 'relative'}}>
                                     <Toolbar>
-                                        <IconButton
+                                        <Fab variant="extended" color="info" aria-label="add"><IconButton
                                             edge="start"
                                             color="inherit"
                                             onClick={() => setOpenDialogFr(false)}
@@ -92,19 +106,29 @@ export default function UserInfo() {
                                         >
                                             <CancelPresentation/>
                                         </IconButton>
+                                            Cancel
+                                        </Fab>
+                                        <Fab variant="extended" color="info" aria-label="add">
                                         <IconButton edge={'end'} onClick={handleOpenDialogQueueFr}>
                                             <GroupAdd/>
                                         </IconButton>
+                                        Request Add Friend
+                                        </Fab>
                                         <Dialog open={openDialogQueueFr} onClose={() => setOpenDialogQueueFr(false)}>
                                             <DialogContent>
                                                 <List>
                                                     {
-                                                        listQueueFr.map(({image, name}) =>
+                                                        listQueueFr.map(({image, name, email}) =>
                                                             <ListItem>
                                                                 <ListItemAvatar>
                                                                     <Avatar src={image}/>
                                                                 </ListItemAvatar>
                                                                 <ListItemText primary={name}/>
+                                                                <ListItemButton>
+                                                                    <Button onClick={() => {axios.post('https://anime-douyin.herokuapp.com/addFriend', {email: params.get('email'), emailFriend : email}).then(resp => {setListFr(resp.data.listFriend); setListQueueFr(resp.data.queueFriend)})
+                                                                        .catch(er => console.log(er))
+                                                                    }}>Accept</Button>
+                                                                </ListItemButton>
                                                             </ListItem>
                                                         )
                                                     }
@@ -115,7 +139,7 @@ export default function UserInfo() {
                                 </AppBar>
                                 <List>
                                     {
-                                        listFr.map(({image, name}) =>
+                                        listFr.map(({image, name, email}) =>
                                             <ListItem>
                                                 <ListItemAvatar>
                                                     <Avatar src={image}/>
@@ -129,9 +153,12 @@ export default function UserInfo() {
                         </Grid>
                         <Grid>
                             <IconButton onClick={() => setOpenDialogSearchFr(true)}>
-                                <PersonAdd/>
+                                <PersonAdd fontSize={'large'}/>
                             </IconButton>
-                            <Dialog open={openDialogSearchFr} onClose={() => setOpenDialogSearchFr(false)}>
+                            <Dialog open={openDialogSearchFr} onClose={() => {
+                                setOpenDialogSearchFr(false);
+                                setResltSearchFr([]);
+                            }}>
                                 <DialogTitle>Search User</DialogTitle>
                                 <TextField hiddenLabel
                                            id="filled-hidden-label-normal"
@@ -142,9 +169,52 @@ export default function UserInfo() {
                                 <List>
                                     {
                                         resltSearchFr.map(({image, name, email}) =>
-                                            <ListItem>
+                                            <ListItem secondaryAction={
+                                                <Fab variant="extended" color="default" aria-label="add">
+                                                    <IconButton
+                                                        onClick={() => axios.get("https://anime-douyin.herokuapp.com/getUserInfo", {params: {email: email}}).then(resp => setInfoFr(resp.data)).catch(er => console.log(er)).finally(() => setOpenDialogDetailFr(true))}><Details/></IconButton>
+                                                    Details Info
+                                                </Fab>
+                                            }>
                                                 <ListItemAvatar><Avatar src={image}/></ListItemAvatar>
                                                 <ListItemText primary={name}/>
+                                                <Dialog open={openDialogDetailFr}>
+                                                    <Card sx={{display: 'flex'}}>
+                                                        <Box sx={{display: 'flex', alignItems: 'center'}}>
+                                                            <Avatar src={image}/>
+                                                            <Typography component="h1" variant="h4">{name}</Typography>
+                                                        </Box>
+                                                        <Grid container direction="row" justifyContent="center"
+                                                              alignItems="center">
+                                                            <Grid item>
+                                                                {listFrOfFr.include(params.get('email')) ?
+                                                                    <Fab>
+                                                                        <IconButton onClick={() => {
+                                                                            axios.delete("https://anime-douyin.herokuapp.com/unFriend", {
+                                                                                params: {
+                                                                                    email: params.get('email'),
+                                                                                    emailFr: email
+                                                                                }
+                                                                            }).then(resp => setListFrOfFr(resp.data)).catch(er => console.log(er))
+                                                                        }}><PeopleOutline/></IconButton>UnFriend
+                                                                    </Fab> :
+                                                                    queueFrOfFr.includes(params.get('email')) ?
+                                                                        <IconButton onClick={() => {
+
+                                                                        }}>
+                                                                            <PersonAddDisabled/>
+                                                                        </IconButton> :
+                                                                        <IconButton onClick={() => {
+
+                                                                        }}> <PersonAdd/> </IconButton>}
+                                                            </Grid>
+                                                            <Grid item>
+                                                                <IconButton><Sms/></IconButton>
+                                                            </Grid>
+
+                                                        </Grid>
+                                                    </Card>
+                                                </Dialog>
                                             </ListItem>
                                         )
                                     }
