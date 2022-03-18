@@ -185,7 +185,7 @@ export default function UserInfo() {
                                     }
                                 </List>
                                 <DialogActions><Button onClick={() => {
-                                    axios.get("https://anime-douyin.herokuapp.com/searchUsrByPrefixName", {params: {prefixNameFr: textSearchFr}})
+                                    axios.get("https://anime-douyin.herokuapp.com/searchUsrByPrefixName", {params: {prefixNameFr: textSearchFr, email:params.get('email')}})
                                         .then(resp => {
                                             setResltSearchFr(resp.data)
                                         })
