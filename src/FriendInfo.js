@@ -69,7 +69,7 @@ export default function FriendInfo({listFriend, queueFriend, openDialog, email, 
                             <IconButton onClick={() => {
                                 axios.post('https://anime-douyin.herokuapp.com/addFrToQueue', {
                                     email: params.get('email'),
-                                    emailFr: email
+                                    emailFriend: email
                                 }).then(resp => setQueueFrOfSeaRs_(resp.data)).catch(er => console.log(er)).finally(() => alert('Send Add Friend Request Success'))
                             }}> <PersonAdd fontSize={'large'}/> </IconButton>}
                 </Grid>

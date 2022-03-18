@@ -49,6 +49,7 @@ export default function UserInfo() {
     const [textSearchFr, setTextSearchFr] = useState("");
     const [resltSearchFr, setResltSearchFr] = useState([]);
     const [openDialogDetailFr, setOpenDialogDetailFr] = useState(false);
+    const [openDialogMyFr, setOpenDialogMyFr] = useState(false);
     React.useEffect(() => {
         axios.get("https://anime-douyin.herokuapp.com/getAllVideoLiked", {params: {email: params.get('email')}}).then(resp => {
             console.log(resp.data)
@@ -111,7 +112,7 @@ export default function UserInfo() {
                                             <DialogContent>
                                                 <List>
                                                     {
-                                                        listQueueFr.map(({image, name, email}) =>
+                                                        listQueueFr.map(({image, name, email, listFriend, queueFriend}) =>
                                                             <ListItem>
                                                                 <ListItemAvatar>
                                                                     <Avatar src={image}/>
@@ -139,12 +140,16 @@ export default function UserInfo() {
                                 </AppBar>
                                 <List>
                                     {
-                                        listFr.map(({image, name, email}) =>
+                                        listFr.map(({image, name, email, listFriend, queueFriend}) =>
                                             <ListItem>
                                                 <ListItemAvatar>
                                                     <Avatar src={image}/>
                                                 </ListItemAvatar>
                                                 <ListItemText primary={name}/>
+                                                <ListItemButton>
+                                                    <Button onClick={() => setOpenDialogMyFr(true)}>Details</Button>
+                                                </ListItemButton>
+                                                <FriendInfo listFriend={listFriend} queueFriend={queueFriend} email={email} name={name} openDialog={openDialogMyFr} image={image}/>
                                             </ListItem>
                                         )
                                     }
