@@ -1,8 +1,9 @@
 import {Avatar, IconButton, Menu, MenuItem} from "@material-ui/core";
-import {AccountCircle} from "@material-ui/icons";
+import {AccountCircle, Home} from "@material-ui/icons";
 import {useEffect, useState} from "react";
 import axios from "axios";
 import {Link} from "react-router-dom";
+import * as React from "react";
 
 export default function Login() {
     const [anchorEl, setAnchorEl] = useState(null);
@@ -54,8 +55,7 @@ export default function Login() {
                             }}
                             open={Boolean(anchorEl)}
                             onClose={handleClose}
-                        >                
-                            {params.get('email')!=null ? <MenuItem ><Link to={'/userInfo?email=' + params.get('email') + '&image=' + params.get('image') + '&name=' + nameUser + '&rft=' + rft}>My Info</Link></MenuItem> : <MenuItem href={'https://anime-douyin.herokuapp.com/redirect'}>My Info</MenuItem>}
+                        >
                             <MenuItem href="https://anime-douyin.vercel.app/">Log Out</MenuItem>
                         </Menu>
 
@@ -69,6 +69,7 @@ export default function Login() {
                         href={'https://anime-douyin.herokuapp.com/redirect'}
                     > <AccountCircle/> </IconButton>
             }
+            {params.get('email')!=null ? <IconButton href={'https://anime-douyin.vercel.app/userInfo?email=' + params.get('email') + '&image=' + params.get('image') + '&name=' + nameUser + '&rft=' + rft}> <Home /></IconButton> : <IconButton href={'https://anime-douyin.herokuapp.com/redirect'}><Home /></IconButton>}
         </>
     );
 }
